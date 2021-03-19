@@ -1,0 +1,10 @@
+# ping servers
+
+- name: test playbook ping
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Ping
+    ping:

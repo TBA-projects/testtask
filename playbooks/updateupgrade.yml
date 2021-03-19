@@ -1,0 +1,13 @@
+- name: Update & upgrade systems
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Update cache
+    apt:
+      update_cache: yes
+
+  - name: Upgrade systems
+    apt:
+      upgrade: yes

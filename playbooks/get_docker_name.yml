@@ -1,0 +1,27 @@
+- name: Get Docker container name
+  hosts: all
+  become: yes
+
+  tasks:
+
+  - name: Get container name
+    shell: sudo docker ps -q
+    register: shell_output
+
+  - debug: var=shell_output.stdout
+
+  - name: Print container name
+    debug: 
+      msg: Container name is {{ shell_output.stdout }}
+
+  - name: Stop container {{ shell_output.stdout }}
+    shell: sudo docker stop {{ shell_output.stdout }}
+    register: stop_output
+
+  - debug: var=stop_output
+
+  - name: RESTART CONTAINER
+    shell: sudo docker start {{ shell_output.stdout }}
+    register: restart_output
+
+  - debug: var=restart_output

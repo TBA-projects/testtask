@@ -1,0 +1,25 @@
+stages:
+  - backup
+  - deploy
+
+
+backup:
+  stage: backup
+  script:
+    - whoami
+    - cp -r /var/www/test_task /root/backups/"$(date +"%d-%m-%Y %H:%M:%S").back"
+deploy_production:
+  stage: deploy
+  script:
+    - 'which ssh-agent || ( apt-get update -y && apt-get install openssh-client -y )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - 'echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+      #1234567890.10.2
+    - cd /root
+    - ls -a
+    - cp -r /root/builds/sxvB4S2L/0/testtask/testtask/test_task /var/www
+    - curl http://192.168.1.86/
+  only:
+    - master
